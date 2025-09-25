@@ -13,7 +13,8 @@ def cross_plot(var, model):
   
   variable_dict = {
     "Light": model.light,
-    "Nutrients": model.nutrients
+    "Nutrients": model.nutrients,
+    "Phytoplankton": model.phytoplankton
   }
 
   max_var = np.nanmax(variable.value)

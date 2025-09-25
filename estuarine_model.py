@@ -9,7 +9,7 @@ model = classes.Model(
   t_f = 1, # Max time (d)
   dt = 1 / 24, # Time step (d), one time-step = 24/x hour
   depth = 25,
-  width = 25,
+  width = 50,
   res = 0.5
 )
 
