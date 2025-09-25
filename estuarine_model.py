@@ -1,25 +1,26 @@
-import math
-import matplotlib.pyplot as plt
 import numpy as np
 
 from tools import bathymetry
 from tools import classes
 from tools import visualization as visu
+from tools import equations as eq
 
 # Model parameters
 
 t_0 = 0 # Initial time
-t_f = 2 # Max time (days)
-dt = 1 / 24 # Time step (days)
+t_f = 2 # Max time (d)
+dt = 1 / 24 # Time step (d), one time-step = one hour
 
 time = np.arange(t_0, t_f + dt, dt)
 
-depth = 10
+depth = 20
 width = 20
-res = 0.5
+res = 0.2
 
 row_dims = int(depth / res)
 col_dims = int(width / res)
+
+# Define model variables
 
 light = classes.Variable2d(time, row_dims, col_dims, 0, "Light")
 
@@ -29,10 +30,10 @@ for t in range(0, len(time)) :
   for row in range(0, row_dims) :
     for col in range(0, col_dims) :
       if (row_dims - row > bathymetry.bathymetry(col)) :
-        light.value[t, row, col] = (math.sin(2 * math.pi / 10 * t) + 1) * (1 - row / row_dims)
+        light.value[t, row, col] = eq.light(t, row * res, col * res)
       else :
         light.value[t, row, col] = np.nan
 
-plt.close()
+# Plor results in cross-section plot
 
-plot = visu.cross_plot(light, t_0, t_f, dt, row_dims, col_dims, res)
+visu.cross_plot(light, t_0, t_f, dt, row_dims, col_dims, res)
