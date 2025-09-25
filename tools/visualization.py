@@ -24,10 +24,12 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
   ax.set_xlim(0 - res, cols - res)
   ax.set_ylim(rows - res, 0 - res)
 
-  ax.set_xticks(np.arange(0, cols, 1 / res))
+  # ax.set_xticks(np.arange(0, cols, 1 / res))
   ax.set_yticks(np.arange(0, rows, 1 / res))
-  ax.set_xticklabels(np.arange(0, cols * res, 1).astype(int))
+  # ax.set_xticklabels(np.arange(0, cols * res, 1).astype(int))
   ax.set_yticklabels(np.arange(0, rows * res, 1).astype(int))
+
+  ax.get_xaxis().set_visible(False)
 
   # adjust the main plot to make room for the slider
   fig.subplots_adjust(left = 0.25, bottom = 0.25)
