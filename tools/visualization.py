@@ -18,14 +18,16 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
 
   cbar = plt.colorbar(tile)
   cbar.ax.set_ylabel(var.name)
-  cbar.ax.set_yticks(np.arange(min, max + (max - min) / 6, (max - min) / 6))
+  cbar.ax.set_yticks(np.arange(min, max + (max - min) / 7, (max - min) / 6))
 
   ax.set_ylabel('Depth (m)')
-  ax.set_xlim(0, cols - res / 2)
-  ax.set_ylim(rows - res / 2, 0)
+  ax.set_xlim(0 - res, cols - res)
+  ax.set_ylim(rows - res, 0 - res)
 
-  ax.set_xticks(np.arange(0, cols, res * 5))
-  ax.set_yticks(np.arange(0, rows, res * 5))
+  ax.set_xticks(np.arange(0, cols, 1 / res))
+  ax.set_yticks(np.arange(0, rows, 1 / res))
+  ax.set_xticklabels(np.arange(0, cols * res, 1).astype(int))
+  ax.set_yticklabels(np.arange(0, rows * res, 1).astype(int))
 
   # adjust the main plot to make room for the slider
   fig.subplots_adjust(left = 0.25, bottom = 0.25)
