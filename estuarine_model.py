@@ -24,15 +24,20 @@ col_dims = int(width / res)
 
 light = classes.Variable2d(time, row_dims, col_dims, 0, "Light")
 
+# Function to update model variables
+
+def compute_variables(t, row, col):
+  if (row_dims - row > bathymetry.bathymetry(col)) :
+    light.value[t, row, col] = eq.light(t, row * res, col * res)
+  else :
+    light.value[t, row, col] = np.nan # No value underground
+
 # Model loop
 
 for t in range(0, len(time)) :
   for row in range(0, row_dims) :
     for col in range(0, col_dims) :
-      if (row_dims - row > bathymetry.bathymetry(col)) :
-        light.value[t, row, col] = eq.light(t, row * res, col * res)
-      else :
-        light.value[t, row, col] = np.nan
+      compute_variables(t, row, col)
 
 # Plor results in cross-section plot
 
