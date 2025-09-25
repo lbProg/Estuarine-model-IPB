@@ -1,20 +1,25 @@
 import numpy as np
+from tools import bathymetry
 
 class Variable2d:
-  def __init__(self, model, initial_value, name):
+  def __init__(self, model, initial_value, equation, name):
     self.value = np.full(
       (len(model.time), model.nrows, model.ncols), initial_value, dtype = float
     )
+    self.equation = equation
     self.name = name
 
-  def update(self, t, row, col, value):
-    self.value[t, row, col] = value
+  def update(self, t, row, col, model):
+    if (model.nrows - row > bathymetry.bathymetry(col)):
+      self.value[t, row, col] = self.equation(t, row, col, model)
+    else:
+      self.value[t, row, col] = np.nan
 
 class Model:
   def __init__(self, t_0, t_f, dt, depth, width, res):
     self.t_0 = t_0
     self.t_f = t_f
-    self.dt = dt # Time step (d), one time-step = 24/x hour
+    self.dt = dt
     self.depth = depth
     self.width = width
     self.res = res
@@ -32,3 +37,5 @@ class Model:
     self.light = light
     self.nutrients = nutrients
     self.phytoplankton = phytoplankton
+
+    self.variables = [self.light, self.nutrients, self.phytoplankton]

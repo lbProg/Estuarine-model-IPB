@@ -19,7 +19,7 @@ def nutrients(t, row, col, model):
 
 # Phytoplankton concentration
 
-def phytoplankton(t, row, col, model):
+def phyto(t, row, col, model):
   previous_val = model.phytoplankton.value[t - 1, row, col]
   grazing = 0.1 * model.light.value[t - 1, row, col] * model.nutrients.value[t - 1, row, col]
 
