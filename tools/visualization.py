@@ -4,7 +4,7 @@ from matplotlib.widgets import Slider
 
 # Cross-section plot to show x, y and time
 
-def cross_plot(var, t_0, t_f, dt):
+def cross_plot(var, t_0, t_f, dt, rows, cols, res):
   max = np.nanmax(var.value)
   min = np.nanmin(var.value)
 
@@ -18,8 +18,14 @@ def cross_plot(var, t_0, t_f, dt):
 
   cbar = plt.colorbar(tile)
   cbar.ax.set_ylabel(var.name)
+  cbar.ax.set_yticks(np.arange(min, max + (max - min) / 6, (max - min) / 6))
 
   ax.set_ylabel('Depth (m)')
+  ax.set_xlim(0, cols - res / 2)
+  ax.set_ylim(rows - res / 2, 0)
+
+  ax.set_xticks(np.arange(0, cols, res * 5))
+  ax.set_yticks(np.arange(0, rows, res * 5))
 
   # adjust the main plot to make room for the slider
   fig.subplots_adjust(left = 0.25, bottom = 0.25)
