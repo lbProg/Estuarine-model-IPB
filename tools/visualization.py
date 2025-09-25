@@ -18,7 +18,7 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
 
   cbar = plt.colorbar(tile)
   cbar.ax.set_ylabel(var.name)
-  cbar.ax.set_yticks(np.arange(min, max + (max - min) / 7, (max - min) / 6))
+  # cbar.ax.set_yticks(np.arange(min, max + (max - min) / 7, (max - min) / 6))
 
   ax.set_ylabel('Depth (m)')
   ax.set_xlim(0 - res / 2, cols - res / 2)
@@ -51,5 +51,18 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
 
   # register the update function
   time_slider.on_changed(update)
+
+  plt.show()
+
+# Line plot to show a variable through time
+
+def line_plot(var, time):
+  # sum_by_time = var.value[:, :, :].sum(axis = 1).sum(axis = 1).tolist()
+
+  plt.close()
+
+  ax = plt.subplot()
+
+  ax.plot(time, var, "r--", label = "var.name")
 
   plt.show()
