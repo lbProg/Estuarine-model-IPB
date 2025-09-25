@@ -21,12 +21,10 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
   cbar.ax.set_yticks(np.arange(min, max + (max - min) / 7, (max - min) / 6))
 
   ax.set_ylabel('Depth (m)')
-  ax.set_xlim(0 - res, cols - res)
-  ax.set_ylim(rows - res, 0 - res)
+  ax.set_xlim(0 - res / 2, cols - res / 2)
+  ax.set_ylim(rows - res / 2, 0 - res / 2)
 
-  # ax.set_xticks(np.arange(0, cols, 1 / res))
   ax.set_yticks(np.arange(0, rows, 1 / res))
-  # ax.set_xticklabels(np.arange(0, cols * res, 1).astype(int))
   ax.set_yticklabels(np.arange(0, rows * res, 1).astype(int))
 
   ax.get_xaxis().set_visible(False)
