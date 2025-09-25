@@ -86,3 +86,24 @@ for t in range(1, len(time)) :
     " | Z : " + str(round(Z[t], 3)) +
     " | Runoff : " + str(round(runoff, 3))
   )
+
+# Plot results
+
+year_starts = range(1, t_f + 1, 365)
+
+plt.close()
+
+fig, ax = plt.subplots(2, sharex = True, height_ratios=(0.6, 0.4))
+
+ax[0].plot(time, N, "r--", label = "Nutrients")
+ax[0].plot(time, P, "g--", label = "Phytoplankton") 
+ax[0].plot(time, Z, "b--", label = "Zooplankton")
+
+ax[1].plot(time, runoff_data, label = "Runoff")
+
+ax[0].legend()
+ax[1].legend()
+
+ax[1].set_xticks(year_starts)
+
+plt.show()
