@@ -4,3 +4,6 @@ class Variable2d:
   def __init__(self, t, dim_x, dim_y, initial_value, name):
     self.value = np.full((len(t), dim_x, dim_y), initial_value, dtype = float)
     self.name = name
+
+  def update(self, t, row, col, value):
+    self.value[t, row, col] = value
