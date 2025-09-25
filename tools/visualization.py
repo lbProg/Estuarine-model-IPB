@@ -4,7 +4,7 @@ from matplotlib.widgets import Slider
 
 # Cross-section plot to show x, y and time
 
-def cross_plot(var, t_0, t_f, dt, rows, cols, res):
+def cross_plot(var, model):
   max = np.nanmax(var.value)
   min = np.nanmin(var.value)
 
@@ -21,11 +21,11 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
   # cbar.ax.set_yticks(np.arange(min, max + (max - min) / 7, (max - min) / 6))
 
   ax.set_ylabel('Depth (m)')
-  ax.set_xlim(0 - res / 2, cols - res / 2)
-  ax.set_ylim(rows - res / 2, 0 - res / 2)
+  ax.set_xlim(0, model.ncols - model.res)
+  ax.set_ylim(model.nrows - model.res, 0 - model.res)
 
-  ax.set_yticks(np.arange(0, rows, 1 / res))
-  ax.set_yticklabels(np.arange(0, rows * res, 1).astype(int))
+  ax.set_yticks(np.arange(0, model.nrows, 1 / model.res))
+  ax.set_yticklabels(np.arange(0, model.nrows * model.res, 1).astype(int))
 
   ax.get_xaxis().set_visible(False)
 
@@ -37,15 +37,15 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
   time_slider = Slider(
       ax = axtime,
       label = 'Time (d)',
-      valmin = t_0,
-      valmax = t_f,
-      valinit = t_0 + dt,
-      valstep = dt
+      valmin = model.t_0,
+      valmax = model.t_f,
+      valinit = model.t_0 + model.dt,
+      valstep = model.dt
   )
 
   # The function to be called anytime a slider's value changes
   def update(t):
-      t = int(t / dt)
+      t = int(t / model.dt)
       ax.imshow(var.value[t, :, :], cmap = cmap, vmin = min, vmax = max)
       fig.canvas.draw()
 
