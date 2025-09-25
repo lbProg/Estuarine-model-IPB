@@ -44,7 +44,7 @@ Z = [init_Z] + [0] * (len(time) - 1)
 
 # Stockage des variables
 
-runoff_data = [0] * len(time)
+runoff_data = [0.5] + [0] * (len(time) - 1)
 
 # Run the model
 
