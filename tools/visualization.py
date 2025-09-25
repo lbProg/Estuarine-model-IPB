@@ -14,7 +14,7 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
   cmap = plt.cm.viridis
   cmap.set_bad('black')
 
-  tile = plt.imshow(var.value[0, :, :], cmap = cmap, vmin = min, vmax = max)
+  tile = plt.imshow(var.value[1, :, :], cmap = cmap, vmin = min, vmax = max)
 
   cbar = plt.colorbar(tile)
   cbar.ax.set_ylabel(var.name)
@@ -39,7 +39,7 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
       label = 'Time (d)',
       valmin = t_0,
       valmax = t_f,
-      valinit = t_0,
+      valinit = t_0 + dt,
       valstep = dt
   )
 
@@ -57,12 +57,14 @@ def cross_plot(var, t_0, t_f, dt, rows, cols, res):
 # Line plot to show a variable through time
 
 def line_plot(var, time):
-  # sum_by_time = var.value[:, :, :].sum(axis = 1).sum(axis = 1).tolist()
+  values = var.value[:, :, :]
+  sum_by_time = np.nansum(np.nansum(values, axis = 1), axis = 1)
 
   plt.close()
 
   ax = plt.subplot()
 
-  ax.plot(time, var, "r--", label = "var.name")
+  ax.plot(time, sum_by_time, "r--", label = var.name)
+  plt.legend()
 
   plt.show()
