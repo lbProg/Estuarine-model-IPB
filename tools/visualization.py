@@ -1,12 +1,22 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.widgets import Slider
+from matplotlib.widgets import Slider, RadioButtons
 
 # Cross-section plot to show x, y and time
 
 def cross_plot(var, model):
-  max = np.nanmax(var.value)
-  min = np.nanmin(var.value)
+  global time, variable
+
+  time = 1
+  variable = var
+  
+  variable_dict = {
+    "Light": model.light,
+    "Nutrients": model.nutrients
+  }
+
+  max_var = np.nanmax(variable.value)
+  min_var = np.nanmin(variable.value)
 
   # Create the figure
   fig, ax = plt.subplots()
@@ -14,11 +24,10 @@ def cross_plot(var, model):
   cmap = plt.cm.viridis
   cmap.set_bad('black')
 
-  tile = plt.imshow(var.value[1, :, :], cmap = cmap, vmin = min, vmax = max)
+  tile = plt.imshow(var.value[1, :, :], cmap = cmap, vmin = min_var, vmax = max_var)
 
   cbar = plt.colorbar(tile)
   cbar.ax.set_ylabel(var.name)
-  # cbar.ax.set_yticks(np.arange(min, max + (max - min) / 7, (max - min) / 6))
 
   ax.set_ylabel('Depth (m)')
   ax.set_xlim(0, model.ncols - model.res)
@@ -43,14 +52,34 @@ def cross_plot(var, model):
       valstep = model.dt
   )
 
-  # The function to be called anytime a slider's value changes
-  def update(t):
-      t = int(t / model.dt)
-      ax.imshow(var.value[t, :, :], cmap = cmap, vmin = min, vmax = max)
-      fig.canvas.draw()
+  # Choose variable
+  axbuttons = fig.add_axes([0.01, 0.25, 0.2, 0.65])
+  var_buttons = RadioButtons(
+    axbuttons,
+    labels = list(variable_dict.keys()),
+    active = list(variable_dict.keys()).index(var.name)
+  )
+
+  # Update plot after user input
+  def update_time(t):
+    global time
+    time = int(t / model.dt)
+    update_plot(time, variable)
+    
+  def update_variable(v):
+    global variable
+    variable = variable_dict[v]
+    update_plot(time, variable)
+
+  def update_plot(time, variable):
+    max_var = np.nanmax(variable.value)
+    min_var = np.nanmin(variable.value)
+    ax.imshow(variable.value[time, :, :], cmap = cmap, vmin = min_var, vmax = max_var)
+    fig.canvas.draw()
 
   # register the update function
-  time_slider.on_changed(update)
+  time_slider.on_changed(update_time)
+  var_buttons.on_clicked(update_variable)
 
   plt.show()
 

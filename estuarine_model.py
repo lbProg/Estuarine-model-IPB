@@ -6,10 +6,10 @@ from tools import equations as eq
 
 model = classes.Model(
   t_0 = 0, # Initial time
-  t_f = 2, # Max time (d)
+  t_f = 1, # Max time (d)
   dt = 1 / 24, # Time step (d), one time-step = 24/x hour
-  depth = 10,
-  width = 10,
+  depth = 25,
+  width = 25,
   res = 0.5
 )
 
