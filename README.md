@@ -11,3 +11,6 @@ On the bottom, you can see total light in the system relative to time. This is a
 All of the equations used in the model are located in tools/equations.py. To run the model, run the file estuarine_model.py.
 
 For now, the model only simulates a 2d cross-section of the river, but we can add the third dimension later.
+
+**Useful resources** :
+- [](https://nbviewer.org/github/barbagroup/CFDPython/blob/master/lessons/01_Step_1.ipynb)
