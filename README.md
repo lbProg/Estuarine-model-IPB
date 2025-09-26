@@ -14,3 +14,4 @@ For now, the model only simulates a 2d cross-section of the river, but we can ad
 
 **Useful resources** :
 - <https://nbviewer.org/github/barbagroup/CFDPython/blob/master/lessons/01_Step_1.ipynb>
+- <https://scipython.com/books/book2/chapter-7-matplotlib/examples/the-two-dimensional-diffusion-equation/>
