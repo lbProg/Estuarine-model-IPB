@@ -9,11 +9,14 @@ class Variable2d:
     self.equation = equation
     self.name = name
 
-  def update(self, t, row, col, model):
-    if (model.nrows - row > bathymetry.bathymetry(col)):
-      self.value[t, row, col] = self.equation(t, row, col, model)
-    else:
-      self.value[t, row, col] = np.nan
+  # def update(self, t, row, col, model):
+  #   if (model.nrows - row > bathymetry.bathymetry(col)):
+  #     self.value[t, row, col] = self.equation(t, row, col, model)
+  #   else:
+  #     self.value[t, row, col] = np.nan
+
+  def update(self, model, t):
+    self.value[t, :, :] = self.equation(self.value[t - 1, :, :], model)
 
 class Model:
   def __init__(self, t_0, t_f, dt, depth, width, res):
@@ -33,9 +36,10 @@ class Model:
     self.tau = tau
     self.N0 = N0
 
-  def initialize_variables(self, light, nutrients, phytoplankton):
-    self.light = light
-    self.nutrients = nutrients
-    self.phytoplankton = phytoplankton
+  def initialize_variables(self, variables):
+    self.variables = variables
 
-    self.variables = [self.light, self.nutrients, self.phytoplankton]
+  def do_timestep(self, t):
+    # self.var_copies = self.variables
+    for var in self.variables.values():
+      var.update(self, t)

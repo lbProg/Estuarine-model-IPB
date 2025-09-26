@@ -6,11 +6,11 @@ from tools import equations as eq
 
 model = classes.Model(
   t_0 = 0, # Initial time
-  t_f = 1, # Max time (d)
+  t_f = 10, # Max time (d)
   dt = 1 / 24, # Time step (d), one time-step = 24/x hour
-  depth = 25,
-  width = 50,
-  res = 0.5
+  depth = 10,
+  width = 10,
+  res = 0.1
 )
 
 model.initialize_dims()
@@ -22,22 +22,22 @@ model.initialize_constants(
 
 # Define model variables
 
-model.initialize_variables(
-  light = classes.Variable2d(model, 0, eq.light, "Light"),
-  nutrients = classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
-  phytoplankton = classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
-)
+model.initialize_variables({
+  #"light": classes.Variable2d(model, 0, eq.light, "Light"),
+  #"nutrients": classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
+  #"phytoplankton": classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
+  "tracer": classes.Variable2d(model, 0.1, eq.tracer, "Tracer")
+})
 
 # Model loop
 
 for t in range(1, len(model.time)):
-  for row in range(0, model.nrows):
-    for col in range(0, model.ncols):
-      for i in range(len(model.variables)):
-        model.variables[i].update(t, row, col, model)
+  model.do_timestep(t)
 
 # Plor results in cross-section plot and line plots
 
-visu.cross_plot(model.light, model)
+# print(model.variables["tracer"].value)
+
+visu.cross_plot(model.variables["tracer"], model)
 
 # visu.line_plot(variables['light'], time)

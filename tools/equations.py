@@ -1,5 +1,10 @@
 import math
 
+# Tracer for testing purposes
+
+def tracer(value, model):
+  return value + 1
+
 # Light availability
 
 def light(t, row, col, model):
