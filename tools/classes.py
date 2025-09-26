@@ -3,9 +3,10 @@ from tools import bathymetry
 
 class Variable2d:
   def __init__(self, model, initial_value, equation, name):
-    self.value = np.full(
-      (len(model.time), model.nrows, model.ncols), initial_value, dtype = float
-    )
+    # self.value = np.full(
+    #   (len(model.time), model.nrows, model.ncols), initial_value, dtype = float
+    # )
+    self.value = initial_value
     self.equation = equation
     self.name = name
 
