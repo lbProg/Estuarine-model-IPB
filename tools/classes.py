@@ -31,7 +31,8 @@ class Model:
   def initialize_dims(self):
     # For stability purposes, we set dt to depend on the model resolution
     # If a tracer diffuses in space more than the model resolution, it glitches
-    self.dt = self.res / self.diff * 2.5
+    # self.dt = self.res / self.diff * 2.5
+    self.dt = 0.001
 
     self.time = np.arange(self.t_0, self.t_f + self.dt / 2, self.dt)
     self.nrows = int(self.depth / self.res)

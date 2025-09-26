@@ -1,12 +1,34 @@
 import math
+import numpy as np
+from scipy.ndimage import shift
 
 # Tracer for testing purposes
 
-def tracer(value, model):
-  return value[1:-1, 1:-1] + model.diff * model.dt * (
+def diffusion(value, model):
+  return value[1:-1, 1:-1] + model.diff * (
     (value[2:, 1:-1] - 2 * value[1:-1, 1:-1] + value[:-2, 1:-1]) / model.res**2 +
     (value[1:-1, 2:] - 2 * value[1:-1, 1:-1] + value[1:-1, :-2]) / model.res**2
-  )
+  ) * model.dt
+
+def convection(value, model):
+  # return value[1:-1, 1:-1] + -0.1 / 2 * model.res * (
+  #   np.pad(value[1:-1, 1:-2], ((0, 0), (1, 0))) - np.pad(value[1:-1, 2:-1], ((0, 0), (0 ,1))) +
+  #   np.pad(value[1:-2, 1:-1], ((1, 0), (0, 0))) - np.pad(value[2:-1, 1:-1], ((0, 1), (0, 0)))
+  # ) * model.dt
+
+  r = np.roll(value[1:-1, 1:-1], 1, axis = 1)
+  l = np.roll(value[1:-1, 1:-1], -1, axis = 1)
+  t = np.roll(value[1:-1, 1:-1], 1, axis = 0)
+  b = np.roll(value[1:-1, 1:-1], -1, axis = 0)
+
+  r[:, 0] = 0
+  l[:, -1] = 0
+  t[0, :] = 0
+  b[-1, :] = 0
+
+  return value[1:-1, 1:-1] + -0.1 / 2 * model.res * (
+    (r - l) + (t - b)
+  ) * model.dt
 
 # Light availability
 
