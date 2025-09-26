@@ -24,7 +24,7 @@ model.initialize_constants(
 
 # Define model variables
 
-tracer_init = np.zeros((len(model.time), model.nrows, model.ncols))
+tracer_init = np.fromfunction(lambda row, col: row, (model.nrows, model.ncols))
 
 model.initialize_variables({
   #"light": classes.Variable2d(model, 0, eq.light, "Light"),
