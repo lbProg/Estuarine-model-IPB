@@ -11,11 +11,10 @@ def cross_plot(var, model):
   time = 1
   variable = var
   
-  variable_dict = {
-    "Light": model.light,
-    "Nutrients": model.nutrients,
-    "Phytoplankton": model.phytoplankton
-  }
+  # Make a dictionary with all model variables
+  variable_dict = {}
+  for i in model.variables:
+    variable_dict[i.name] = i
 
   max_var = np.nanmax(variable.value)
   min_var = np.nanmin(variable.value)
