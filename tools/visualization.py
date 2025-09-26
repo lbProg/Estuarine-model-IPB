@@ -47,10 +47,11 @@ def cross_plot(var, model):
   axes[0].set_xlim(0.5, model.ncols - 0.5)
   axes[0].set_ylim(model.nrows - 0.5, -0.5)
 
-  tickres = 100 # 1 tick every n row (cm)
+  tickres = 2 # One tick every n metres
+  tick_factor = 100 # Conversion factor between rows (cm) and y axis (m)
 
-  axes[0].set_yticks(np.arange(0, model.nrows, 1 / model.res * tickres))
-  axes[0].set_yticklabels(np.arange(0, model.nrows * model.res / tickres, 1).astype(int))
+  axes[0].set_yticks(np.arange(0, model.nrows, 1 / model.res * tick_factor * tickres))
+  axes[0].set_yticklabels(np.arange(0, model.nrows * model.res / tick_factor, tickres).astype(int))
 
   axes[0].get_xaxis().set_visible(False)
 
