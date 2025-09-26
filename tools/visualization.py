@@ -13,11 +13,16 @@ def cross_plot(var, model):
   
   # Make a dictionary with all model variables
   variable_dict = {}
-  for i in model.variables:
+  for i in model.variables.values():
     variable_dict[i.name] = i
 
   max_var = np.nanmax(variable.value)
   min_var = np.nanmin(variable.value)
+
+  if (max_var == min_var):
+    # Colorbar is weird, artificially give it a range
+    max_var += max_var / 10
+    min_var -= min_var / 10
 
   def update_line_plot():
     global values, sum_by_time
@@ -50,7 +55,7 @@ def cross_plot(var, model):
   axes[1].plot(model.time, sum_by_time, "r--", label = variable.name)
   axes[1].axvline(x = model.time[time])
 
-  plt.legend()
+  # plt.legend()
 
   # adjust the main plot to make room for the slider
   fig.subplots_adjust(left = 0.3, bottom = 0.2)
@@ -86,14 +91,14 @@ def cross_plot(var, model):
     update_plot(time, variable)
 
   def update_plot(time, variable):
-    max_var = np.nanmax(variable.value)
-    min_var = np.nanmin(variable.value)
+    # max_var = np.nanmax(variable.value)
+    # min_var = np.nanmin(variable.value)
     axes[0].imshow(variable.value[time, :, :], cmap = cmap, vmin = min_var, vmax = max_var)
     cbar.ax.set_ylabel(variable.name)
 
     update_line_plot()
     axes[1].clear()
-    axes[1].plot(model.time, sum_by_time, "r--", label = variable.name)
+    axes[1].plot(model.time, sum_by_time, "r--", label = "hehe")
     axes[1].axvline(x = model.time[time])
 
     fig.canvas.draw()
