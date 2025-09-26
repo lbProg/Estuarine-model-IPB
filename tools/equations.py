@@ -3,7 +3,10 @@ import math
 # Tracer for testing purposes
 
 def tracer(value, model):
-  return value + 1
+  return value[1:-1, 1:-1] + model.diff * model.dt * (
+    (value[2:, 1:-1] - 2 * value[1:-1, 1:-1] + value[:-2, 1:-1]) / model.res**2 +
+    (value[1:-1, 2:] - 2 * value[1:-1, 1:-1] + value[1:-1, :-2]) / model.res**2
+  )
 
 # Light availability
 

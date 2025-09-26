@@ -35,7 +35,7 @@ def cross_plot(var, model):
   # Create the figure
   fig, axes = plt.subplots(2, 1, height_ratios = (0.7, 0.3))
 
-  cmap = plt.cm.viridis
+  cmap = plt.cm.hot
   cmap.set_bad('black')
 
   tile = axes[0].imshow(var.value[time, :, :], cmap = cmap, vmin = min_var, vmax = max_var)
@@ -44,11 +44,13 @@ def cross_plot(var, model):
   cbar.ax.set_ylabel(var.name)
 
   axes[0].set_ylabel('Depth (m)')
-  axes[0].set_xlim(0, model.ncols - model.res)
-  axes[0].set_ylim(model.nrows - model.res, 0 - model.res)
+  axes[0].set_xlim(0.5, model.ncols - 0.5)
+  axes[0].set_ylim(model.nrows - 0.5, -0.5)
 
-  axes[0].set_yticks(np.arange(0, model.nrows, 1 / model.res))
-  axes[0].set_yticklabels(np.arange(0, model.nrows * model.res, 1).astype(int))
+  tickres = 100 # 1 tick every n row (cm)
+
+  axes[0].set_yticks(np.arange(0, model.nrows, 1 / model.res * tickres))
+  axes[0].set_yticklabels(np.arange(0, model.nrows * model.res / tickres, 1).astype(int))
 
   axes[0].get_xaxis().set_visible(False)
 
@@ -68,7 +70,7 @@ def cross_plot(var, model):
       valmin = model.t_0,
       valmax = model.t_f,
       valinit = model.t_0 + model.dt,
-      valstep = model.dt
+      valstep = (model.t_f - model.t_0) / 50
   )
 
   # Choose variable
