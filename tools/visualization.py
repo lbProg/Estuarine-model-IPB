@@ -43,17 +43,21 @@ def cross_plot(var, model):
   cbar = plt.colorbar(tile)
   cbar.ax.set_ylabel(var.name)
 
+  padding = 0 # Show space around the model
   axes[0].set_ylabel('Depth (m)')
-  axes[0].set_xlim(0.5, model.ncols - 0.5)
-  axes[0].set_ylim(model.nrows - 0.5, -0.5)
+  axes[0].set_xlim(padding + 0.5, model.ncols - padding)
+  axes[0].set_ylim(model.nrows - padding, padding + 0.5)
 
   tickres = 2 # One tick every n metres
   tick_factor = 100 # Conversion factor between rows (cm) and y axis (m)
 
-  axes[0].set_yticks(np.arange(0, model.nrows, 1 / model.res * tick_factor * tickres))
-  axes[0].set_yticklabels(np.arange(0, model.nrows * model.res / tick_factor, tickres).astype(int))
+  axes[0].set_yticks(np.arange(0.5, model.nrows + 1, 1 / model.res * tick_factor * tickres))
+  axes[0].set_yticklabels(np.arange(0, (model.nrows + 1) * model.res / tick_factor, tickres).astype(int))
 
-  axes[0].get_xaxis().set_visible(False)
+  axes[0].set_xticks(np.arange(0.5, model.ncols + 1, 1 / model.res * tick_factor * tickres))
+  axes[0].set_xticklabels(np.arange(0, (model.ncols + 1) * model.res / tick_factor, tickres).astype(int))
+
+  # axes[0].get_xaxis().set_visible(False)
 
   axes[1].plot(model.time, sum_by_time, "r--", label = variable.name)
   axes[1].axvline(x = model.time[time])
@@ -70,7 +74,7 @@ def cross_plot(var, model):
       label = 'Time (d)',
       valmin = model.t_0,
       valmax = model.t_f,
-      valinit = model.t_0 + model.dt,
+      valinit = model.t_0 + (model.t_f - model.t_0) / 50,
       valstep = (model.t_f - model.t_0) / 50
   )
 
