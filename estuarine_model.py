@@ -1,8 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from tools.classes import Variable2d, Model
+from classes.model import Model
+from classes.variable2d import Variable2d
 from tools import equations as eq
+from tools.visualization import visualize_results
 
 # Model setup
 model = Model(
@@ -46,6 +48,4 @@ model.initialize_variables({
 model.run(debug = True)
 
 # Plor results in cross-section plot
-time_slider_1, var_buttons_1, fig_1 = model.plot_results("tracer_1")
-
-plt.show()
+visualize_results([model]) # As a list so you can put several different models and compare them
