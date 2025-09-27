@@ -7,13 +7,13 @@ from tools import equations as eq
 # Model parameters
 
 model = Model(
-  t_0 = 0, # Initial time
+  t_0 = 0, # Initial time (d)
   t_f = 3, # Max time (d)
   depth = 100 * 20, # cm
   width = 100 * 20, # cm
-  res = 40, # cm
-  diff = 1000, # Diffusion coefficient
-  conv = 5000 # Advection coefficient
+  res = 50, # Spatial resolution (cm)
+  diff = 1000, # Diffusion coefficient (what unit ?)
+  conv = 5000 # Advection coefficient (what unit ?)
 )
 
 model.initialize_dims()
@@ -28,7 +28,7 @@ model.initialize_constants({
 
 tracer_init = np.fromfunction(
   lambda row, col: 
-  np.where((row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 1E3 * model.res, 10, 0),
+  np.where((row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 3E6 / model.res, 10, 0),
   (model.nrows, model.ncols)
 )
 
@@ -39,39 +39,10 @@ model.initialize_variables({
   "tracer_1": Variable2d(model, tracer_init, eq.tracer, "Tracer 1"),
 })
 
-print("--------------------")
-model.summary()
-
 # Model loop
 
-for t in range(1, len(model.time)):
-  model.do_timestep(t)
+model.run(debug = True)
 
 # Plor results in cross-section plot and line plots
 
-# print(model.variables["tracer"].value)
-
-visu.cross_plot(model.variables["tracer_1"], model)
-
-# visu.line_plot(variables['light'], time)
-
-# t = 100
-# x = 40
-
-# a = np.zeros((t, 3, x))
-# b = a
-# b[0, 1, 10:15] = 1
-
-# b
-
-# for i in range(1, t):
-#   b[i, :, :] = eq.convection(b[i - 1, :, :], model)
-#   # b[i, :, :] = 0
-
-# # import matplotlib.pyplot as plt
-
-# plt.close()
-# plt.plot(range(x), b[0, 1, :])
-# plt.plot(range(x), b[10, 1, :])
-# plt.plot(range(x), b[50, 1, :])
-# plt.plot(range(x), b[98, 1, :])
+model.plot_results("tracer_1")
