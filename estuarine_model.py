@@ -41,7 +41,7 @@ model.initialize_variables({
   #"nutrients": classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
   #"phytoplankton": classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
   "tracer_1": Variable2d(model, tracer_init, eq.diffusion, "Tracer 1"),
-  #"tracer_2": Variable2d(model, tracer_init_2, eq.diffusion, "Tracer 2")
+  "tracer_2": Variable2d(model, tracer_init_2, eq.convection, "Tracer 2")
 })
 
 print("--------------------")

@@ -1,6 +1,5 @@
 import math
 import numpy as np
-from scipy.ndimage import shift
 
 # Tracer for testing purposes
 
@@ -16,12 +15,12 @@ def convection(value, model):
   #   np.pad(value[1:-2, 1:-1], ((1, 0), (0, 0))) - np.pad(value[2:-1, 1:-1], ((0, 1), (0, 0)))
   # ) * model.dt
 
-  r = np.roll(value, 1, axis = 1)
-  l = np.roll(value, -1, axis = 1)
-  t = np.roll(value, 1, axis = 0)
-  b = np.roll(value, -1, axis = 0)
+  r = np.roll(value[1:-1, 1:-1], 1, axis = 1)
+  l = np.roll(value[1:-1, 1:-1], -1, axis = 1)
+  t = np.roll(value[1:-1, 1:-1], 1, axis = 0)
+  b = np.roll(value[1:-1, 1:-1], -1, axis = 0)
 
-  newval = value - 10000 * model.dt / model.res * 0.01 * (value - r)
+  newval = value[1:-1, 1:-1] - 10000 * model.dt / model.res * 0.01 * (value[1:-1, 1:-1] - r)
   newval[0, :] = 0
   newval[:, 0] = 0
 

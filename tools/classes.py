@@ -4,9 +4,9 @@ from tools import bathymetry
 class Variable2d:
   def __init__(self, model, initial_value, equation, name):
     self.value = np.zeros(
-      (len(model.time), model.nrows, model.ncols), dtype = float
+      (len(model.time), model.nrows + 2, model.ncols + 2), dtype = float
     )
-    self.value[0, :, :] = initial_value
+    self.value[0, 1:-1, 1:-1] = initial_value
     self.equation = equation
     self.name = name
 
@@ -17,7 +17,7 @@ class Variable2d:
   #     self.value[t, row, col] = np.nan
 
   def update(self, model, t):
-    self.value[t, :, :] = self.equation(self.value[t - 1, :, :], model)
+    self.value[t, 1:-1, 1:-1] = self.equation(self.value[t - 1, :, :], model)
 
 class Model:
   def __init__(self, t_0, t_f, depth, width, res, diff):
