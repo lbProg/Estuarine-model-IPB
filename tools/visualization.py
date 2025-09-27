@@ -105,8 +105,8 @@ class Cross_plot:
         label = 'Time (d)',
         valmin = self.model.t_0,
         valmax = self.model.t_f,
-        valinit = self.model.t_0 + (self.model.t_f - self.model.t_0) / 50,
-        valstep = (self.model.t_f - self.model.t_0) / 50
+        valinit = self.model.t_0 + self.model.dt,
+        valstep = self.model.dt
     )
 
     # Radio buttons to choose the variable
