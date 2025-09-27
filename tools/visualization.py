@@ -6,7 +6,8 @@ from matplotlib.widgets import Slider, RadioButtons
 
 def plot(initial_var, model) :
   cross_plot = Cross_plot(initial_var, model)
-  cross_plot.plot()
+  return cross_plot.plot()
+
 
 class Cross_plot:
   def __init__(self, initial_var, model):
@@ -120,7 +121,7 @@ class Cross_plot:
     time_slider.on_changed(self.update_time)
     var_buttons.on_clicked(self.update_var)
 
-    plt.show()
+    return time_slider, var_buttons, self.fig
 
 
 def cross_plot_old(var, model):

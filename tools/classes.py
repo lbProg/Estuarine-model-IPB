@@ -78,4 +78,4 @@ class Model:
     )
   
   def plot_results(self, var):
-    visu.plot(self.variables[var], self)
+    return visu.plot(self.variables[var], self)

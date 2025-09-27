@@ -1,10 +1,10 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 from tools.classes import Variable2d, Model
 from tools import equations as eq
 
-# Model parameters
-
+# Model setup
 model = Model(
   t_0 = 0, # Initial time (d)
   t_f = 3, # Max time (d)
@@ -24,7 +24,6 @@ model.initialize_constants({
 })
 
 # Define model variables
-
 tracer_init = np.fromfunction(
   lambda row, col: 
   np.where(
@@ -43,12 +42,10 @@ model.initialize_variables({
   "tracer_2": Variable2d(model, tracer_init, eq.convection, "Tracer 2"),
 })
 
-# Model loop
+# Run the model
+model.run(debug = True)
 
-model.run(debug = False)
+# Plor results in cross-section plot
+time_slider_1, var_buttons_1, fig_1 = model.plot_results("tracer_1")
 
-# print(model.variables["tracer_1"].value[0, :, :])
-
-# Plor results in cross-section plot and line plots
-
-model.plot_results("tracer_1")
+plt.show()
