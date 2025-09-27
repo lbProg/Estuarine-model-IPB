@@ -17,5 +17,21 @@ class Variable2d:
   #   else:
   #     self.value[t, row, col] = np.nan
 
+  def pad_zeros(self, matrix, model):
+    # Set borders to zero to avoid weird behaviour like looping over edges.
+    # The borders are not displayed and not taken into account in any way
+
+    new_matrix = matrix.copy()
+
+    new_matrix[0, :] = 0
+    new_matrix[:, 0] = 0
+    new_matrix[model.nrows + 1, :] = 0
+    new_matrix[:, model.ncols + 1] = 0
+
+    return new_matrix
+
   def update(self, model, t):
-    self.value[t, :, :] = self.equation(self.value[t - 1, :, :], model)
+    self.value[t, :, :] = self.pad_zeros(
+      self.equation(self.value[t - 1, :, :], model), model
+    )
+    
