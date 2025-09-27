@@ -1,9 +1,9 @@
 import numpy as np
-import matplotlib.pyplot as plt
 
 from classes.model import Model
 from classes.variable2d import Variable2d
 from tools import equations as eq
+from tools import initial_distributions as ini
 from tools.visualization import visualize_results
 
 # Model setup
@@ -26,15 +26,7 @@ model.initialize_constants({
 })
 
 # Define model variables
-tracer_init = np.fromfunction(
-  lambda row, col: 
-  np.where(
-    (row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 3E6 / model.res,
-    10,
-    0
-  ),
-  (model.nrows, model.ncols)
-)
+tracer_init = ini.distribution_square(model, 10, 15, 30)
 
 model.initialize_variables({
   #"light": classes.Variable2d(model, 0, eq.light, "Light"),
