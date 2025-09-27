@@ -1,3 +1,5 @@
+import numpy as np
+
 from classes.model import Model
 from classes.variable2d import Variable2d
 from tools import equations as eq
