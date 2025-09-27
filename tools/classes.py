@@ -17,7 +17,7 @@ class Variable2d:
   #     self.value[t, row, col] = np.nan
 
   def update(self, model, t):
-    self.value[t, 1:-1, 1:-1] = self.equation(self.value[t - 1, :, :], model)
+    self.value[t, :, :] = self.equation(self.value[t - 1, :, :], model)
 
 class Model:
   def __init__(self, t_0, t_f, depth, width, res, diff):

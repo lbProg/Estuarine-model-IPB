@@ -40,8 +40,8 @@ model.initialize_variables({
   #"light": classes.Variable2d(model, 0, eq.light, "Light"),
   #"nutrients": classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
   #"phytoplankton": classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
-  "tracer_1": Variable2d(model, tracer_init, eq.convection, "Tracer 1"),
-  "tracer_2": Variable2d(model, tracer_init_2, eq.diffusion, "Tracer 2")
+  "tracer_1": Variable2d(model, tracer_init, eq.diffusion, "Tracer 1"),
+  #"tracer_2": Variable2d(model, tracer_init_2, eq.diffusion, "Tracer 2")
 })
 
 print("--------------------")
@@ -59,3 +59,24 @@ for t in range(1, len(model.time)):
 visu.cross_plot(model.variables["tracer_1"], model)
 
 # visu.line_plot(variables['light'], time)
+
+# t = 100
+# x = 40
+
+# a = np.zeros((t, 3, x))
+# b = a
+# b[0, 1, 10:15] = 1
+
+# b
+
+# for i in range(1, t):
+#   b[i, :, :] = eq.convection(b[i - 1, :, :], model)
+#   # b[i, :, :] = 0
+
+# # import matplotlib.pyplot as plt
+
+# plt.close()
+# plt.plot(range(x), b[0, 1, :])
+# plt.plot(range(x), b[10, 1, :])
+# plt.plot(range(x), b[50, 1, :])
+# plt.plot(range(x), b[98, 1, :])
