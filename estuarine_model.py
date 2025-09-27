@@ -1,7 +1,6 @@
 import numpy as np
 
 from tools.classes import Variable2d, Model
-from tools import visualization as visu
 from tools import equations as eq
 
 # Model parameters
@@ -28,7 +27,11 @@ model.initialize_constants({
 
 tracer_init = np.fromfunction(
   lambda row, col: 
-  np.where((row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 3E6 / model.res, 10, 0),
+  np.where(
+    (row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 3E6 / model.res,
+    10,
+    0
+  ),
   (model.nrows, model.ncols)
 )
 
@@ -37,6 +40,7 @@ model.initialize_variables({
   #"nutrients": classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
   #"phytoplankton": classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
   "tracer_1": Variable2d(model, tracer_init, eq.tracer, "Tracer 1"),
+  "tracer_2": Variable2d(model, tracer_init, eq.diffusion, "Tracer 2"),
 })
 
 # Model loop

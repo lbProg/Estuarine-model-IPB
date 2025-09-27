@@ -78,4 +78,4 @@ class Model:
     )
   
   def plot_results(self, var):
-    visu.cross_plot(self.variables[var], self)
+    visu.plot(self.variables[var], self)
