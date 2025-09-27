@@ -13,6 +13,6 @@ def visualize_results(models):
   buttons = [0] * len(models)
   figs = [0] * len(models)
   for i in range(len(models)):
-    sliders[i], buttons[i], figs[i] = models[i].plot_results("tracer_1")
+    sliders[i], buttons[i], figs[i] = models[i].plot_results(list(models[i].variables)[0])
 
   plt.show()
