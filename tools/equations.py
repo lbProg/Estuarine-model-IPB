@@ -4,7 +4,7 @@ import numpy as np
 # Convection-diffusion equations
 
 def diffusion(value, model):
-  newval = value
+  newval = value.copy()
 
   newval[1:-1, 1:-1] = value[1:-1, 1:-1] + model.diff * (
     (value[2:, 1:-1] - 2 * value[1:-1, 1:-1] + value[:-2, 1:-1]) / model.res**2 +
@@ -25,7 +25,7 @@ def convection(value, model):
   x_mvt = np.roll(value, dir[0], axis = 1)
   y_mvt = np.roll(value, -dir[1], axis = 0)
 
-  newval = value
+  newval = value.copy() # .copy() makes it not change the previous matrix (weird?)
 
   newval[1:-1, 1:-1] = (
     value[1:-1, 1:-1] - model.conv * model.dt / model.res * 
