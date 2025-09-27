@@ -10,19 +10,26 @@ def diffusion(value, model):
   ) * model.dt
 
 def convection(value, model):
-  # return value[1:-1, 1:-1] + -0.1 / 2 * model.res * (
-  #   np.pad(value[1:-1, 1:-2], ((0, 0), (1, 0))) - np.pad(value[1:-1, 2:-1], ((0, 0), (0 ,1))) +
-  #   np.pad(value[1:-2, 1:-1], ((1, 0), (0, 0))) - np.pad(value[2:-1, 1:-1], ((0, 1), (0, 0)))
-  # ) * model.dt
+  dir = np.sign(model.constants["current"])
 
-  r = np.roll(value[1:-1, 1:-1], 1, axis = 1)
-  l = np.roll(value[1:-1, 1:-1], -1, axis = 1)
-  t = np.roll(value[1:-1, 1:-1], 1, axis = 0)
-  b = np.roll(value[1:-1, 1:-1], -1, axis = 0)
+  x_mvt = np.roll(value, dir[0], axis = 1)
+  y_mvt = np.roll(value, -dir[1], axis = 0)
 
-  newval = value[1:-1, 1:-1] - 10000 * model.dt / model.res * 0.01 * (value[1:-1, 1:-1] - r)
+  newval = value
+
+  newval[1:-1, 1:-1] = (
+    value[1:-1, 1:-1] - 10000 * model.dt / model.res * 
+    (
+      abs(model.constants["current"][0]) * (value[1:-1, 1:-1] - x_mvt[1:-1, 1:-1]) + 
+      abs(model.constants["current"][1]) * (value[1:-1, 1:-1] - y_mvt[1:-1, 1:-1])
+    )
+  )
+
+  # Set model borders to zero to avoid looping back over edges
   newval[0, :] = 0
   newval[:, 0] = 0
+  newval[model.nrows + 1, :] = 0
+  newval[:, model.ncols + 1] = 0
 
   return newval
 

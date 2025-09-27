@@ -17,10 +17,11 @@ model = Model(
 
 model.initialize_dims()
 
-model.initialize_constants(
-  N0 = 1, # nutrient input
-  tau = 0.1 # turnover rate
-)
+model.initialize_constants({
+  "N0": 1, # nutrient input
+  "tau": 0.1, # turnover rate
+  "current": (-0.1, 0.1) # Water flow vector, axes x-y
+})
 
 # Define model variables
 
@@ -40,7 +41,7 @@ model.initialize_variables({
   #"light": classes.Variable2d(model, 0, eq.light, "Light"),
   #"nutrients": classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
   #"phytoplankton": classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
-  "tracer_1": Variable2d(model, tracer_init, eq.diffusion, "Tracer 1"),
+  #"tracer_1": Variable2d(model, tracer_init, eq.diffusion, "Tracer 1"),
   "tracer_2": Variable2d(model, tracer_init_2, eq.convection, "Tracer 2")
 })
 
@@ -56,7 +57,7 @@ for t in range(1, len(model.time)):
 
 # print(model.variables["tracer"].value)
 
-visu.cross_plot(model.variables["tracer_1"], model)
+visu.cross_plot(model.variables["tracer_2"], model)
 
 # visu.line_plot(variables['light'], time)
 
