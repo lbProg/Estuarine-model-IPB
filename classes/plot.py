@@ -41,14 +41,25 @@ class Plot:
 
   def update_var(self, v):
     self.var = self.var_names[v]
+
+    self.vmin = np.nanmin(self.var.value)
+    self.vmax = np.nanmax(self.var.value)
+
+    # Colorbar is weird if no variation, so we artificially give it a range
+    if (self.vmax == self.vmin):
+      self.vmax += self.vmax / 10
+      self.vmin -= self.vmin / 10
+
     self.update_plot()
 
   def update_plot(self):
     # Update cross-section plot
-    self.axes[0].imshow(
+    tile = self.axes[0].imshow(
       self.var.value[self.time, :, :], cmap = self.cmap, vmin = self.vmin, vmax = self.vmax
     )
 
+    self.cbar.remove()
+    self.cbar = plt.colorbar(tile)
     self.cbar.ax.set_ylabel(self.var.name)
 
     # Update line plot
