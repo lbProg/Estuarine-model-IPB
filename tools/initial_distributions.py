@@ -17,7 +17,7 @@ def distribution_square(model, side, depth, xpos):
   matrix = np.fromfunction(
     lambda row, col: 
     np.where(
-      abs(row - depth) + abs(col - xpos) < side,
+      abs(row * (model.res / 100)- depth) + abs(col * (model.res / 100)- xpos) < side,
       10,
       0
     ),
