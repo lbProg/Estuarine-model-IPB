@@ -4,14 +4,15 @@ from tools.progressbar import progressbar
 from tools import visualization as visu
 
 class Model:
-  def __init__(self, t_0, t_f, depth, width, res, diff, conv):
+  def __init__(self, t_0, t_f, depth, width, res, diff, adv):
     self.t_0 = t_0
     self.t_f = t_f
+    self.t = t_0
     self.depth = depth
     self.width = width
     self.res = res
     self.diff = diff
-    self.conv = conv
+    self.adv = adv
 
   def initialize_dims(self):
     # For stability purposes, we set dt to depend on the model resolution
@@ -43,6 +44,7 @@ class Model:
       print("")
 
   def do_timestep(self, t):
+    self.t += self.dt
     for var in self.variables.values():
       var.update(self, t)
 

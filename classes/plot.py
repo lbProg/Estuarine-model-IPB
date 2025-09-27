@@ -49,6 +49,8 @@ class Plot:
       self.var.value[self.time, :, :], cmap = self.cmap, vmin = self.vmin, vmax = self.vmax
     )
 
+    self.cbar.ax.set_ylabel(self.var.name)
+
     # Update line plot
     self.update_line_plot_data()
     self.axes[1].clear()
@@ -62,9 +64,12 @@ class Plot:
     self.fig, self.axes = plt.subplots(2, 1, height_ratios = (0.7, 0.3))
 
     # Initial cross-section plot
-    self.axes[0].imshow(
+    tile = self.axes[0].imshow(
       self.var.value[self.time, :, :], cmap = self.cmap, vmin = self.vmin, vmax = self.vmax
     )
+
+    self.cbar = plt.colorbar(tile)
+    self.cbar.ax.set_ylabel(self.var.name)
 
     # Initial line plot
     self.axes[1].plot(self.model.time, self.sum_by_time, "r--", label = self.var.name)

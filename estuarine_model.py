@@ -1,18 +1,18 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
-from tools.classes import Variable2d, Model
+from classes.model import Model
+from classes.variable2d import Variable2d
 from tools import equations as eq
+from tools import initial_distributions as ini
+from tools.visualization import visualize_results
 
 # Model setup
 model = Model(
   t_0 = 0, # Initial time (d)
   t_f = 3, # Max time (d)
   depth = 100 * 20, # cm
-  width = 100 * 40, # cm
+  width = 100 * 20, # cm
   res = 50, # Spatial resolution (cm)
   diff = 1000, # Diffusion coefficient (what unit ?)
-  conv = 5000 # Advection coefficient (what unit ?)
+  adv = 5000 # Advection coefficient (what unit ?)
 )
 
 model.initialize_dims()
@@ -24,28 +24,18 @@ model.initialize_constants({
 })
 
 # Define model variables
-tracer_init = np.fromfunction(
-  lambda row, col: 
-  np.where(
-    (row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 3E6 / model.res,
-    10,
-    0
-  ),
-  (model.nrows, model.ncols)
-)
+tracer_init = ini.distribution_square(model, 10, 15, 30)
 
 model.initialize_variables({
-  #"light": classes.Variable2d(model, 0, eq.light, "Light"),
+  "light": Variable2d(model, 0, eq.light, "Light"),
   #"nutrients": classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
   #"phytoplankton": classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
   "tracer_1": Variable2d(model, tracer_init, eq.tracer, "Tracer 1"),
-  "tracer_2": Variable2d(model, tracer_init, eq.convection, "Tracer 2"),
+  # "tracer_2": Variable2d(model, tracer_init, eq.convection, "Tracer 2"),
 })
 
 # Run the model
 model.run(debug = True)
 
 # Plor results in cross-section plot
-time_slider_1, var_buttons_1, fig_1 = model.plot_results("tracer_1")
-
-plt.show()
+visualize_results([model]) # As a list so you can put several different models and compare them
