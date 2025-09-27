@@ -20,13 +20,14 @@ class Variable2d:
     self.value[t, :, :] = self.equation(self.value[t - 1, :, :], model)
 
 class Model:
-  def __init__(self, t_0, t_f, depth, width, res, diff):
+  def __init__(self, t_0, t_f, depth, width, res, diff, conv):
     self.t_0 = t_0
     self.t_f = t_f
     self.depth = depth
     self.width = width
     self.res = res
     self.diff = diff
+    self.conv = conv
 
   def initialize_dims(self):
     # For stability purposes, we set dt to depend on the model resolution

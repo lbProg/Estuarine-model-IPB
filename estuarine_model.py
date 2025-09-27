@@ -8,11 +8,12 @@ from tools import equations as eq
 
 model = Model(
   t_0 = 0, # Initial time
-  t_f = 10, # Max time (d)
+  t_f = 3, # Max time (d)
   depth = 100 * 20, # cm
   width = 100 * 20, # cm
-  res = 100, # cm
-  diff = 1000 # Diffusion coefficient
+  res = 40, # cm
+  diff = 1000, # Diffusion coefficient
+  conv = 5000 # Advection coefficient
 )
 
 model.initialize_dims()
@@ -27,13 +28,7 @@ model.initialize_constants({
 
 tracer_init = np.fromfunction(
   lambda row, col: 
-  np.where((row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 2E3 * model.res, 10, 0),
-  (model.nrows, model.ncols)
-)
-
-tracer_init_2 = np.fromfunction(
-  lambda row, col: 
-  np.where((row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 2E3 * model.res, 10, 0),
+  np.where((row * model.res - model.depth/2)**2 + (col * model.res - model.width/2)**2 < 1E3 * model.res, 10, 0),
   (model.nrows, model.ncols)
 )
 
@@ -41,8 +36,7 @@ model.initialize_variables({
   #"light": classes.Variable2d(model, 0, eq.light, "Light"),
   #"nutrients": classes.Variable2d(model, 0.1, eq.nutrients, "Nutrients"),
   #"phytoplankton": classes.Variable2d(model, 0.1, eq.phyto, "Phytoplankton")
-  #"tracer_1": Variable2d(model, tracer_init, eq.diffusion, "Tracer 1"),
-  "tracer_2": Variable2d(model, tracer_init_2, eq.convection, "Tracer 2")
+  "tracer_1": Variable2d(model, tracer_init, eq.tracer, "Tracer 1"),
 })
 
 print("--------------------")
@@ -57,7 +51,7 @@ for t in range(1, len(model.time)):
 
 # print(model.variables["tracer"].value)
 
-visu.cross_plot(model.variables["tracer_2"], model)
+visu.cross_plot(model.variables["tracer_1"], model)
 
 # visu.line_plot(variables['light'], time)
 

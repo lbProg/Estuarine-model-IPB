@@ -1,13 +1,23 @@
 import math
 import numpy as np
 
-# Tracer for testing purposes
+# Convection-diffusion equations
 
 def diffusion(value, model):
-  return value[1:-1, 1:-1] + model.diff * (
+  newval = value
+
+  newval[1:-1, 1:-1] = value[1:-1, 1:-1] + model.diff * (
     (value[2:, 1:-1] - 2 * value[1:-1, 1:-1] + value[:-2, 1:-1]) / model.res**2 +
     (value[1:-1, 2:] - 2 * value[1:-1, 1:-1] + value[1:-1, :-2]) / model.res**2
   ) * model.dt
+
+  # Set model borders to zero
+  newval[0, :] = 0
+  newval[:, 0] = 0
+  newval[model.nrows + 1, :] = 0
+  newval[:, model.ncols + 1] = 0
+
+  return newval
 
 def convection(value, model):
   dir = np.sign(model.constants["current"])
@@ -18,7 +28,7 @@ def convection(value, model):
   newval = value
 
   newval[1:-1, 1:-1] = (
-    value[1:-1, 1:-1] - 10000 * model.dt / model.res * 
+    value[1:-1, 1:-1] - model.conv * model.dt / model.res * 
     (
       abs(model.constants["current"][0]) * (value[1:-1, 1:-1] - x_mvt[1:-1, 1:-1]) + 
       abs(model.constants["current"][1]) * (value[1:-1, 1:-1] - y_mvt[1:-1, 1:-1])
@@ -32,6 +42,11 @@ def convection(value, model):
   newval[:, model.ncols + 1] = 0
 
   return newval
+
+# Tracer for testing purposes
+
+def tracer(value, model):
+  return diffusion(convection(value, model), model)
 
 # Light availability
 
