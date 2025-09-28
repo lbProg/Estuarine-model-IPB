@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 from tools.progressbar import progressbar
 from tools import visualization as visu
@@ -8,6 +9,7 @@ class Model:
     self.t_0 = t_0
     self.t_f = t_f
     self.t = t_0
+    self.iter = 0
     self.depth = depth
     self.width = width
     self.res = res
@@ -45,6 +47,7 @@ class Model:
 
   def do_timestep(self, t):
     self.t += self.dt
+    self.iter += 1
     for var in self.variables.values():
       var.update(self, t)
 

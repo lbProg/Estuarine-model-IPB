@@ -25,3 +25,11 @@ def distribution_square(model, side, depth, xpos):
   )
 
   return matrix
+
+def distribution_flow(model, left, right, top, bottom, val):
+  matrix = np.full((model.nrows, model.ncols), val)
+  # matrix = np.fromfunction(
+  #   lambda row, col: row * val * 0.1, (model.nrows, model.ncols)
+  # )
+
+  return matrix

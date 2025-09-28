@@ -14,20 +14,53 @@ def diffusion(value, model):
   return newval
 
 def advection(value, model):
-  dir = np.sign(model.constants["current"])
+  # We can't directly use negative values for current (e.g. -1 on the x axis)
+  # So we pre-compute forward and backward advection, and use the correct one for each
+  # current value in the matrix
 
-  x_mvt = np.roll(value, dir[0], axis = 1)
-  y_mvt = np.roll(value, -dir[1], axis = 0)
+  # Forward and backward advection on v (side-by-side) and w (up-and-down) axes
+  v_mvt_pos = np.roll(value, 1, axis = 1)
+  v_mvt_neg = np.roll(value, -1, axis = 1)
+  w_mvt_pos = np.roll(value, 1, axis = 0)
+  w_mvt_neg = np.roll(value, -1, axis = 0)
+
+  # Fetch values of v and w current flow for each cell
+  flow_v = model.variables["flow_v"].value[model.iter, 1:-1, 1:-1]
+  flow_w = model.variables["flow_w"].value[model.iter, 1:-1, 1:-1]
 
   newval = value.copy() # .copy() makes it not change the previous matrix (weird?)
 
   newval[1:-1, 1:-1] = (
-    value[1:-1, 1:-1] - model.adv * model.dt / model.res * 
+    value[1:-1, 1:-1] - model.adv * (model.dt / model.res) * 
     (
-      abs(model.constants["current"][0]) * (value[1:-1, 1:-1] - x_mvt[1:-1, 1:-1]) + 
-      abs(model.constants["current"][1]) * (value[1:-1, 1:-1] - y_mvt[1:-1, 1:-1])
+      np.where(flow_v > 0, flow_v, 0) * (value[1:-1, 1:-1] - v_mvt_pos[1:-1, 1:-1]) +
+      np.where(flow_v < 0, abs(flow_v), 0) * (value[1:-1, 1:-1] - v_mvt_neg[1:-1, 1:-1]) +
+      np.where(flow_w > 0, flow_w, 0) * (value[1:-1, 1:-1] - w_mvt_pos[1:-1, 1:-1]) +
+      np.where(flow_w < 0, abs(flow_w), 0) * (value[1:-1, 1:-1] - w_mvt_neg[1:-1, 1:-1])
     )
   )
+  return newval
+
+# Constant flow
+
+def flow_const(value, model):
+  return value
+
+# Periodic flow
+
+def flow_period(value, model):
+  newval = value.copy()
+  newval[:, 0] = math.sin(model.t * 5) * 0.1 # Assign value on the border
+
+  newval[1:-1, 1:-1] = newval[1:-1, 0]
+
+  return newval
+
+def flow_period2(value, model):
+  newval = value.copy()
+  newval[:, 0] = math.sin(model.t * 5 + math.pi/2) * 0.1 # Assign value on the border
+
+  newval[1:-1, 1:-1] = newval[1:-1, 0]
 
   return newval
 
