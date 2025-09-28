@@ -7,12 +7,12 @@ from tools.visualization import visualize_results
 # Model setup
 model = Model(
   t_0 = 0, # Initial time (d)
-  t_f = 4, # Max time (d)
+  t_f = 20, # Max time (d)
   depth = 100 * 40, # cm
   width = 100 * 40, # cm
   res = 50, # Spatial resolution (cm)
-  diff = 1000, # Diffusion coefficient (what unit ?)
-  adv = 5000 # Advection coefficient (what unit ?)
+  diff = 0, # Diffusion coefficient (what unit ?)
+  adv = 5 # Advection coefficient (what unit ?)
 )
 
 model.initialize_dims()
@@ -23,13 +23,13 @@ model.initialize_constants({
 })
 
 # Define model variables
-tracer_init = ini.distribution_square(model, 5, 10, 10)
-flow_v_init = ini.distribution_flow(model, 1, 0, 0, 0, val = -0.1)
-flow_w_init = ini.distribution_flow(model, 0, 0, 0, 0, 0)
+tracer_init = ini.distribution_circle(model, 15, model.depth / 100 / 2, 20)
+flow_v_init = ini.distribution_flow(model, 0, 0, 0, 0, val = 1)
+flow_w_init = ini.distribution_flow_uniform(model, 0, 0, 0, 0, val = 0)
 
 model.initialize_variables({
-  "flow_v": Variable2d(model, flow_v_init, eq.flow_period, "Flow v"),
-  "flow_w": Variable2d(model, flow_w_init, eq.flow_period2, "Flow w"),
+  "flow_v": Variable2d(model, flow_v_init, eq.flow_const, "Flow v"),
+  "flow_w": Variable2d(model, flow_w_init, eq.flow_const, "Flow w"),
   "tracer_1": Variable2d(model, tracer_init, eq.tracer, "Tracer 1")
   # "tracer_2": Variable2d(model, tracer_init, eq.convection, "Tracer 2"),
 })
