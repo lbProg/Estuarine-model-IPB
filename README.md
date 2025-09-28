@@ -13,16 +13,16 @@ All of the equations used in the model are located in tools/equations.py. To run
 For now, the model only simulates a 2d cross-section of the river, but we can add the third dimension later.
 
 **To-do list** :
-- [x] Basic cell framework that allows for different variables and equations
-- [x] Simple visualization option
-- [x] Advection-diffusion
-- [] Continuity equation (mass conservation), water current as a vector field
-- [] NPZD dynamics, turbidity, light availability
-- [] Integrate the benthic compartment
-- [] Different water masses and stratification
-- [] Tides and changing water level (tough)
-- [] Go 3d
-- [] Optimization ?
+[x] Basic cell framework that allows for different variables and equations
+[x] Simple visualization option
+[x] Advection-diffusion
+[] Continuity equation (mass conservation), water current as a vector field
+[] NPZD dynamics, turbidity, light availability
+[] Integrate the benthic compartment
+[] Different water masses and stratification
+[] Tides and changing water level (tough)
+[] Go 3d
+[] Optimization ?
 
 **Useful resources** :
 - <https://nbviewer.org/github/barbagroup/CFDPython/blob/master/lessons/01_Step_1.ipynb>
