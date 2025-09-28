@@ -27,5 +27,5 @@ For now, the model only simulates a 2d cross-section of the river, but we can ad
 - [ ] Optimization ?
 
 **Useful resources** :
-- <https://external.ink?to=/drzgan.github.io/Python_CFD/2.1D%20linear%20convection.html>
-- <https://external.ink?to=/scipython.com/books/book2/chapter-7-matplotlib/examples/the-two-dimensional-diffusion-equation/>
+- <https://drzgan.github.io/Python_CFD/2.1D%20linear%20convection.html>
+- <https://scipython.com/books/book2/chapter-7-matplotlib/examples/the-two-dimensional-diffusion-equation/>
