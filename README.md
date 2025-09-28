@@ -17,7 +17,7 @@ For now, the model only simulates a 2d cross-section of the river, but we can ad
 - [x] Simple visualization option
 - [x] Advection-diffusion
 - [x] Water current as a vector field
-- [ ] Continuity equation (mass conservation)
+- [x] Continuity equation (mass conservation)
 - [ ] NPZD dynamics, turbidity, light availability
 - [ ] Integrate the benthic compartment
 - [ ] Different water masses and stratification
