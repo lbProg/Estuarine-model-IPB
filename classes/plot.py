@@ -7,9 +7,9 @@ class Plot:
     self.var = initial_var
     self.time = 1 # Start at first simulation step (don't show initial state)
     self.model = model
-    self.cmap = plt.cm.hot
+    self.cmap = plt.cm.viridis
     self.cmap.set_bad("black") # nan color
-    self.tickres = 2 # One tick every n metres
+    self.tickres = model.nrows / 20 # One tick every n metres
     self.tick_factor = 100 # Conversion factor between rows (cm) and y axis (m)
     self.padding = 0 # Space around model
 
