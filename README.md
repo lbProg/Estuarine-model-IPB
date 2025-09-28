@@ -20,6 +20,7 @@ For now, the model only simulates a 2d cross-section of the river, but we can ad
 - [x] Continuity equation (mass conservation)
 - [ ] NPZD dynamics, turbidity, light availability
 - [ ] Integrate the benthic compartment
+- [ ] Harmonize units everywhere and get credible parameter values
 - [ ] Different water masses and stratification
 - [ ] Tides and changing water level (tough)
 - [ ] Go 3d
