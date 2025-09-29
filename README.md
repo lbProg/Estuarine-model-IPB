@@ -18,6 +18,7 @@ For now, the model only simulates a 2d cross-section of the river, but we can ad
 - [x] Advection-diffusion
 - [x] Water current as a vector field
 - [x] Continuity equation (mass conservation)
+- [ ] Density from temperature and salinity
 - [ ] Bathymetry, air and changing water levels
 - [ ] Water as an incomporessible fluid (flux divergence)
 - [ ] Continuity of flow
