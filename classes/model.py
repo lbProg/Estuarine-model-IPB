@@ -49,6 +49,9 @@ class Model:
   def do_timestep(self, t):
     self.t += self.dt
     self.iter += 1
+
+    self.constants["water_level"][self.iter] = 5 * math.sin(self.t * 0.5 + math.pi) + 5
+
     for var in self.variables.values():
       var.update(self, t)
 
