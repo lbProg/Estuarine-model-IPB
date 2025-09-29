@@ -34,17 +34,6 @@ def advection(value, model):
   # and the flow of itself (or the next cell ?) for what it loses (= transfer to next cell)
   # Lose your value * your flux and gain the value before * the flux before
 
-  # newval[1:-1, 1:-1] = (
-  #   value[1:-1, 1:-1] - model.adv * (model.dt / model.res) * 
-  #   (
-  #     np.where(flow_v > 0, np.roll(flow_v, 1, axis = 1), 0) * (value[1:-1, 1:-1] - v_mvt_pos[1:-1, 1:-1]) -
-  #     np.where(flow_v > 0, flow_v, 0) * (value[1:-1, 1:-1]) #+
-  #     # np.where(flow_v < 0, abs(flow_v), 0) * (value[1:-1, 1:-1] - v_mvt_neg[1:-1, 1:-1]) +
-  #     # np.where(flow_w > 0, flow_w, 0) * (value[1:-1, 1:-1] - w_mvt_pos[1:-1, 1:-1]) +
-  #     # np.where(flow_w < 0, abs(flow_w), 0) * (value[1:-1, 1:-1] - w_mvt_neg[1:-1, 1:-1])
-  #   )
-  # )
-
   # Warning : current speed * model.adv * model.dt cannot be > 1
   # In one time step, no more that 100% of the content of a cell can be advected
 
