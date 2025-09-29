@@ -18,12 +18,13 @@ For now, the model only simulates a 2d cross-section of the river, but we can ad
 - [x] Advection-diffusion
 - [x] Water current as a vector field
 - [x] Continuity equation (mass conservation)
+- [ ] Bathymetry, air and changing water levels
 - [ ] Water as an incomporessible fluid (flux divergence)
 - [ ] NPZD dynamics, turbidity, light availability
 - [ ] Integrate the benthic compartment
 - [ ] Harmonize units everywhere and get credible parameter values
 - [ ] Different water masses and stratification
-- [ ] Tides and changing water level (tough-ish)
+- [ ] Tides (tough-ish)
 - [ ] Go 3d
 - [ ] Optimization ?
 
