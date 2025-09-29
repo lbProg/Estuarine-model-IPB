@@ -50,17 +50,29 @@ class Plot:
       self.vmax += self.vmax / 10
       self.vmin -= self.vmin / 10
 
+      print(self.vmax)
+
+    # self.fig.delaxes(self.cbar.ax)
+    # self.cbar = self.fig.colorbar(self.tile)
+    # self.cbar.ax.set_ylabel(self.var.name)
+
+    # gs = gridspec.GridSpec(1, 1)  # Recreate GridSpec without the colorbar space
+    # self.axes[0].set_position(gs[0].get_position(self.fig))  # Adjust the position of the main plot
+    # self.axes[0].set_subplotspec(gs[0])
+
+    # self.fig.subplots_adjust(left = 0.3, bottom = 0.2)
+
     self.update_plot()
 
   def update_plot(self):
     # Update cross-section plot
-    tile = self.axes[0].imshow(
+    self.tile = self.axes[0].imshow(
       self.var.value[self.time, :, :], cmap = self.cmap, vmin = self.vmin, vmax = self.vmax
     )
 
-    self.cbar.remove()
-    self.cbar = plt.colorbar(tile)
-    self.cbar.ax.set_ylabel(self.var.name)
+    # Line for water level
+    self.hline.remove()
+    self.hline = self.axes[0].axhline(y = self.model.constants["water_level"][self.time] * 100 / self.model.res)
 
     # Update line plot
     self.update_line_plot_data()
@@ -71,22 +83,7 @@ class Plot:
     # Draw the new plots
     self.fig.canvas.draw()
 
-  def plot(self):
-    self.fig, self.axes = plt.subplots(2, 1, height_ratios = (0.7, 0.3))
-
-    # Initial cross-section plot
-    tile = self.axes[0].imshow(
-      self.var.value[self.time, :, :], cmap = self.cmap, vmin = self.vmin, vmax = self.vmax
-    )
-
-    self.cbar = plt.colorbar(tile)
-    self.cbar.ax.set_ylabel(self.var.name)
-
-    # Initial line plot
-    self.axes[1].plot(self.model.time, self.sum_by_time, "r--", label = self.var.name)
-    self.axes[1].axvline(x = self.model.time[self.time])
-
-    # Set axes
+  def set_axes(self):
     self.axes[0].set_ylabel('Depth (m)')
     self.axes[0].set_xlim(self.padding + 0.5, self.model.ncols - self.padding)
     self.axes[0].set_ylim(self.model.nrows - self.padding, self.padding + 0.5)
@@ -104,6 +101,30 @@ class Plot:
     self.axes[0].set_xticklabels(
       np.arange(0, (self.model.ncols + 1) * self.model.res / self.tick_factor, self.tickres).astype(int)
     )
+
+  def plot(self):
+    self.fig, self.axes = plt.subplots(2, 1, height_ratios = (0.7, 0.3))
+
+    # Set axes
+    self.set_axes()
+
+    # Initial cross-section plot
+    self.tile = self.axes[0].imshow(
+      self.var.value[self.time, :, :], cmap = self.cmap, vmin = self.vmin, vmax = self.vmax
+    )
+
+    # Line for water level
+    self.hline = self.axes[0].axhline(y = self.model.constants["water_level"][self.time] * 100 / self.model.res)
+
+    self.cbar = plt.colorbar(self.tile)
+    self.cbar.ax.set_ylabel(self.var.name)
+
+    # Initial line plot
+    self.axes[1].plot(self.model.time, self.sum_by_time, "r--", label = self.var.name)
+    self.axes[1].axvline(x = self.model.time[self.time])
+
+    # Synchronize everything
+    self.update_var(self.var.name)
     
     # Make space for slider and radio buttons
     self.fig.subplots_adjust(left = 0.3, bottom = 0.2)
