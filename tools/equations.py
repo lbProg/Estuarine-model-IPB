@@ -53,6 +53,26 @@ def advection(value, model):
 def flow_const(value, model):
   return value
 
+# Flow constant relative to initial value
+
+def flow_const_init(value, model):
+  matrix = value.copy()
+  matrix[1:-1, 1:-1] = np.fromfunction(
+    lambda row, col: 
+    np.where(row < 5, -10, 0),
+    (model.nrows, model.ncols)
+  )
+
+  return matrix
+
+# Random flow everywhere
+
+def flow_random(value, model):
+  newval = value.copy()
+  newval[1:-1, 1:-1] = np.random.rand(model.nrows, model.ncols) - 0.5
+  
+  return newval
+
 # Periodic flow
 
 def flow_period(value, model):
